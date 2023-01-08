@@ -33,10 +33,10 @@ def quiz():
             st.session_state.questions = [0] * 2
             st.session_state.correct, st.session_state.failed = random.sample([0, 1], 2)
             st.session_state.questions[st.session_state.correct] = random.choice(
-                st.session_state.siz_images
+                st.session_state.cat_images
             )
             st.session_state.questions[st.session_state.failed] = random.choice(
-                st.session_state.ao_images
+                st.session_state.dog_images
             )
             st.session_state.first = False
 
@@ -61,8 +61,8 @@ def quiz():
             st.stop()
 
     if "page_id" not in st.session_state:
-        siz_files = glob.glob("./assets/image/siz/*")
-        ao_files = glob.glob("./assets/image/ao/*")
+        cat_files = glob.glob("./assets/image/cat/*")
+        dog_files = glob.glob("./assets/image/dog/*")
         start_image = "./assets/image/start.png"
         again_image = "./assets/image/again.jpg"
 
@@ -98,17 +98,17 @@ def quiz():
                 % audio_str
             )
 
-        st.session_state.siz_images = []
-        for file1 in siz_files:
+        st.session_state.cat_images = []
+        for file1 in cat_files:
             with open(file1, "rb") as image1:
                 encoded = base64.b64encode(image1.read()).decode()
-                st.session_state.siz_images.append(f"data:image/jpeg;base64,{encoded}")
+                st.session_state.cat_images.append(f"data:image/jpeg;base64,{encoded}")
 
-        st.session_state.ao_images = []
-        for file2 in ao_files:
+        st.session_state.dog_images = []
+        for file2 in dog_files:
             with open(file2, "rb") as image2:
                 encoded = base64.b64encode(image2.read()).decode()
-                st.session_state.ao_images.append(f"data:image/jpeg;base64,{encoded}")
+                st.session_state.dog_images.append(f"data:image/jpeg;base64,{encoded}")
 
         with open(start_image, "rb") as image3:
             encoded = base64.b64encode(image3.read()).decode()

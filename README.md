@@ -1,1 +1,1 @@
-# sz_app
+# kids_app
