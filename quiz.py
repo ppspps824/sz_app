@@ -125,7 +125,7 @@ def quiz():
     if st.session_state.page_id == "main":
         with container.container():
             st.markdown(
-                "<h1 style='text-align: center;'>どっちがしずくでしょう？？</h1>",
+                "<h1 style='text-align: center;'>どっちがにゃんこでしょう？？</h1>",
                 unsafe_allow_html=True,
             )
             st.markdown(
