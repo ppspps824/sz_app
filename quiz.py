@@ -10,30 +10,16 @@ from st_clickable_images import clickable_images
 def quiz():
     container = st.empty()
 
-    def play_audio(audio):
-        audio_str = "data:audio/ogg;base64,%s" % (base64.b64encode(audio).decode())
-        audio_html = (
-            """
-                        <audio autoplay=True>
-                        <source src="%s" type="audio/ogg" autoplay=True>
-                        Your browser does not support the audio element.
-                        </audio>
-                    """
-            % audio_str
-        )
-
-        time.sleep(0.1)  # これがないと上手く再生されません
-        st.markdown(audio_html, unsafe_allow_html=True)
-
     def judge(clicked, correct, page_id):
         if clicked == correct:
-            play_audio(st.session_state.correct_sound)
+            time.sleep(0.5)
+            st.markdown(st.session_state.correct_sound_html, unsafe_allow_html=True)
             st.balloons()
             st.session_state.correct_num += 1
         else:
-            play_audio(st.session_state.failed_sound)
+            time.sleep(0.5)
+            st.markdown(st.session_state.failed_sound_html, unsafe_allow_html=True)
 
-        time.sleep(2)
         st.session_state.page_id = page_id
         st.session_state.first = True
 
@@ -71,6 +57,8 @@ def quiz():
                 judge(clicked, st.session_state.correct, f"page{no+1}")
             else:
                 judge(clicked, st.session_state.correct, "final")
+        else:
+            st.stop()
 
     if "page_id" not in st.session_state:
         siz_files = glob.glob("./assets/image/siz/*")
@@ -83,10 +71,32 @@ def quiz():
             "failed": "./assets/audio/failed.mp3",
         }
         with open(st.session_state.sounds["correct"], "rb") as file1:
-            st.session_state.correct_sound = file1.read()
+            audio_str = "data:audio/ogg;base64,%s" % (
+                base64.b64encode(file1.read()).decode()
+            )
+            st.session_state.correct_sound_html = (
+                """
+                        <audio autoplay=True>
+                        <source src="%s" type="audio/ogg" autoplay=True>
+                        Your browser does not support the audio element.
+                        </audio>
+                    """
+                % audio_str
+            )
 
         with open(st.session_state.sounds["failed"], "rb") as file2:
-            st.session_state.failed_sound = file2.read()
+            audio_str = "data:audio/ogg;base64,%s" % (
+                base64.b64encode(file2.read()).decode()
+            )
+            st.session_state.failed_sound_html = (
+                """
+                        <audio autoplay=True>
+                        <source src="%s" type="audio/ogg" autoplay=True>
+                        Your browser does not support the audio element.
+                        </audio>
+                    """
+                % audio_str
+            )
 
         st.session_state.siz_images = []
         for file1 in siz_files:
@@ -125,7 +135,7 @@ def quiz():
             _, _, center, _, _ = st.columns(5)
             with center:
                 st.session_state.quest_num = int(
-                    st.radio("", ("3", "5", "10"), horizontal=True)
+                    st.radio(" ", ("3", "5", "10"), horizontal=True)
                 )
             clicked = clickable_images(
                 [st.session_state.start_logo],
