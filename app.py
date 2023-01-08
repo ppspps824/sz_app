@@ -6,7 +6,7 @@ from quiz import quiz
 from streamlit_option_menu import option_menu
 
 st.set_page_config(
-    page_title="しずくアプリ",
+    page_title="KidsApps",
     layout="wide",
     initial_sidebar_state="expanded",
 )
